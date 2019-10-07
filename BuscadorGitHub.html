@@ -25,6 +25,10 @@ $(document).ready(function(){
 	
 		alert("Vas a buscar los repositorio del usuario: " + $("#usr").val());
 		
+		//Primero reiniciamos la tabla antes de volverla a usar
+		$("#tablaresultados").html("");
+		$("#tablaresultados").append("<thead> <tr> <th>Nombre</th> <th>Descripción</th> <th>Número de seguidores</th> <th>Link</th> </tr> </thead> <tbody> </tbody>");
+		
 		var u = ("https://api.github.com/users/" + $("#usr").val() + "/repos");
 		
 		$.get(u, function(data, status){
@@ -48,7 +52,6 @@ $(document).ready(function(){
 				//alert("Nombre del repositorio: " + nombre + " \nDescripción: " + descripcion + " \nSeguidores: " + seguidores);
 				
 				//ESCRIBIR LOS RESULTADOS EN LA TABLA
-				
 				<!--Tabla con clases contextuales (color según el tipo)-->
 				var j;
 				var ref = '"' + "https://github.com/" + $("#usr").val() + "/" + nombre + '"';
