@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Página para buscar repositorios de un usuario GitHub</title>
+  
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+</head>
+
+
+<script>
+$(document).ready(function(){
+  // jQuery methods go here...
+  
+	alert("Bienvenido a la página de búsqueda de repositorios.");
+	
+	$("#buscarbtn").click(function(){
+	
+		alert("Vas a buscar los repositorio del usuario: " + $("#usr").val());
+		
+		var u = ("https://api.github.com/users/" + $("#usr").val() + "/repos");
+		
+		$.get(u, function(data, status){
+			//alert("Data: " + data + "\nStatus: " + status);
+			
+			//BUCLE
+			for(var i=0;i<data.length;i++){
+				//var nombre = $(data[i]).attr("name");
+				//var descripcion = $(data[i}).attr("description");
+				//var seguidores = $(data[i]).attr("");
+				var nombre = data[i].name;
+				var descripcion = data[i].description;
+				
+				/*var urlsubs = ("https://api.github.com/repos/" + $("#usr").val() + "/" + nombre + "/" + "subscribers");
+				$.get(urlsubs, function(datasubs, status){
+					var seguidores = datasubs.length;
+				});*/
+				
+				var seguidores = data[i].stargazers_count;
+				
+				//alert("Nombre del repositorio: " + nombre + " \nDescripción: " + descripcion + " \nSeguidores: " + seguidores);
+				
+				//ESCRIBIR LOS RESULTADOS EN LA TABLA
+				
+				<!--Tabla con clases contextuales (color según el tipo)-->
+				var j;
+				var ref = '"' + "https://github.com/" + $("#usr").val() + "/" + nombre + '"';
+				if (i%6 == 0){
+					j = 0;
+				}
+				if(j == 1){
+					$("#tablaresultados").append("<tr class = " + "danger" + "> <td>" + nombre + " </td> <td> " + descripcion + "</td> <td>" + seguidores + "</td> <td> <a href= " + ref + ">" + nombre + "</a> </td> </tr> ");
+				} else if (j == 2){
+					$("#tablaresultados").append("<tr class = " + "warning" + "> <td>" + nombre + " </td> <td> " + descripcion + "</td> <td>" + seguidores + "</td> <td> <a href= " + ref + ">" + nombre + "</a> </td> </tr> ");
+				} else if (j == 3){
+					$("#tablaresultados").append("<tr class = " + "success" + "> <td>" + nombre + " </td> <td> " + descripcion + "</td> <td>" + seguidores + "</td> <td> <a href= " + ref + ">" + nombre + "</a> </td> </tr> ");
+				} else if (j == 4){
+					$("#tablaresultados").append("<tr class = " + "info" + "> <td>" + nombre + " </td> <td> " + descripcion + "</td> <td>" + seguidores + "</td> <td> <a href= " + ref + ">" + nombre + "</a> </td> </tr> ");
+				} else if (j == 5){
+					$("#tablaresultados").append("<tr class = " + "active" + "> <td>" + nombre + " </td> <td> " + descripcion + "</td> <td>" + seguidores + "</td> <td> <a href= " + ref + ">" + nombre + "</a> </td> </tr> ");
+				} else{
+					$("#tablaresultados").append("<tr> <td>" + nombre + " </td> <td> " + descripcion + "</td> <td>" + seguidores + "</td> <td> <a href= " + ref + ">" + nombre + "</a> </td> </tr> ");
+				}
+				j = j + 1;
+				
+				/*<table class="table">
+					<tbody>
+						<tr>
+							<td>nombre</td>
+							<td>descripcion</td>
+							<td>seguidores</td>
+						</tr>
+					</tbody>
+				</table>
+				*/
+				
+			}
+		});
+	});
+});
+</script>
+
+
+
+
+<body>
+<div class="container-fluid">
+
+	<div class="jumbotron">
+	
+		<!--div class="page-header"-->
+		<h1>Buscador de repositorios de un usuario GitHub</h1>
+		<!--/div-->
+		
+		<p1 class = "text-primary" > Introduce usuario de <a href="github.com">GitHub</a> y te devolverá su repositorio.</p1>
+		
+	</div>
+	
+</div>
+
+<div class="container-fluid">
+
+	<div class="form-group">Usuario:</label>
+		<input type="text" class="form-control" id="usr">
+	</div>
+	
+	<button type="button" class="btn btn-success" id="buscarbtn">Buscar repos</button>
+	
+	<table class="table table-hover" id = "tablaresultados">
+	
+		<thead>
+			<tr>
+				<th>Nombre</th>
+				<th>Descripción</th>
+				<th>Número de seguidores</th>
+				<th>Link</th>
+			</tr>
+		</thead>
+		
+		<tbody>
+		</tbody>
+	</table>
+	
+</div>
+
+</body>
+
+</html>
